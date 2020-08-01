@@ -22,7 +22,7 @@ jobs:
           yarn install --frozen-lockfile
       - uses: expo/expo-github-action@v5
         with:
-          expo-version: 38.x
+          expo-version: 3.x
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
       - run: expo publish
