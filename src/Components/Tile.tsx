@@ -1,27 +1,33 @@
 import * as React from 'react';
-import {Text, TouchableOpacity} from "react-native";
+import {Image, TouchableOpacity} from "react-native";
+import {Orientation} from "../Store";
 
 interface Props {
-    title: string
+    title: string,
+    orientation: Orientation
 }
 
 export const Tile = (props: Props) => {
+
     return (
         <TouchableOpacity
             style={{
                 elevation: 3,
                 borderRadius: 25,
                 height: 110,
-                backgroundColor: '#7A05BC',
                 width: 110,
                 alignSelf: 'center',
                 justifyContent: 'center',
                 alignContent: 'center'
             }}
         >
-            <Text style={{textAlign: 'center'}}>
-                {props.title}
-            </Text>
+            <Image source={require('./spotify.png')}
+                   style={{
+                       height: 110,
+                       width: 110,
+                       borderRadius: 25,
+                       transform: [{rotate: (props.orientation === Orientation.Portrait)?'0deg':'-90deg'}]
+                   }}/>
         </TouchableOpacity>
     );
 };

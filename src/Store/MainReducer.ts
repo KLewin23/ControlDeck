@@ -1,5 +1,5 @@
 import {AnyAction} from "redux";
-import {ActionType, MainReducerType} from ".";
+import {ActionType, MainReducerType, Orientation} from ".";
 import AsyncStorage from '@react-native-community/async-storage';
 
 
@@ -7,7 +7,8 @@ const initialState: MainReducerType = {
     apiUrl: '',
     scanningForBarcodes: false,
     devices: [],
-    profiles: []
+    profiles: [],
+    orientation: Orientation.Portrait
 };
 
 export enum Status {
@@ -46,6 +47,12 @@ export default function MainReducer(state = initialState, action: AnyAction): Ma
             return {
                 ...state,
                 devices: state.devices.filter((cur, index) => index !== action.payload)
+            }
+        case ActionType.SET_ORIENTATION:
+            console.log(action.payload)
+            return {
+                ...state,
+                orientation: action.payload
             }
         default:
             return state;
