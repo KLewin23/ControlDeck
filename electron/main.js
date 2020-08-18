@@ -1,27 +1,33 @@
 // @ts-ignore
-const {app, BrowserWindow, Tray, nativeImage, ipcMain } = require('electron')
-const path = require('path')
+const { app, BrowserWindow, Tray, nativeImage, ipcMain, dialog } = require("electron");
+const path = require("path");
 const url = require("url");
-const express = require('express')
-const getPort = require('get-port')
-const ip = require('ip')
+const express = require("express");
+const getPort = require("get-port");
+const internalIp = require("internal-ip");
+const os = require("os");
+const fs = require("fs");
 
 let mainWindow;
 let tray;
+let currentReq;
+const expressApp = express();
 
 app.whenReady().then(() => {
-    tray = new Tray(nativeImage.createFromPath(path.join(__dirname, '/icon.png')))
-    tray.on('click', () => mainWindow.show())
+    tray = new Tray(nativeImage.createFromPath(path.join(__dirname, "/icon.png")));
+    tray.on("click", () => mainWindow.show());
     mainWindow = new BrowserWindow({
         width: 800,
         height: 550,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            allowRunningInsecureContent: false
         },
         autoHideMenuBar: true,
-        title: 'Control Deck',
+        title: "Control Deck",
         frame: false
-    })
+    });
 
     const startUrl =
         process.env.ELECTRON_START_URL ||
@@ -30,39 +36,151 @@ app.whenReady().then(() => {
             protocol: "file:",
             slashes: true
         });
-    console.log(startUrl)
-    mainWindow.loadURL(startUrl)
-    mainWindow.setResizable(false)
+    console.log(startUrl);
+    mainWindow.loadURL(startUrl);
+    mainWindow.setResizable(false);
     mainWindow.webContents.openDevTools();
 
-    mainWindow.on('close', (event) => {
+    mainWindow.on("close", (event) => {
         event.preventDefault();
         mainWindow.hide();
-    })
-})
+        if (currentReq !== null) {
+            currentReq.send({ appStatus: "cancelled" });
+            mainWindow.webContents.send("resetState");
+        }
+    });
+});
 
+//REST API
 
+expressApp.get("/addDevice", (req, res) => {
+    try {
+        mainWindow.webContents.send("addDevice", {
+            name: req.query.name,
+            width: req.query.width,
+            height: req.query.height
+        });
+        currentReq = res;
+    } catch (err) {
+        console.log(err);
+    }
+});
 
-const expressApp = express();
-
-expressApp.get('/addDevice', (req, res) => {
-    mainWindow.webContents.send('addDevice','name')
-    res.send('success')
-})
-
+expressApp.get("/getProfile", (req, res) => {
+    res.send({
+        rows: 2,
+        cols: 2,
+        tiles: [
+            {
+                name: "test1",
+                action: "consoleLog"
+            },
+            {
+                name: "test2",
+                action: "consoleLog"
+            },
+            {
+                name: "test3",
+                action: "consoleLog"
+            },
+            {
+                name: "test4",
+                action: "consoleLog"
+            }
+        ]
+    });
+});
 
 const port = (async () => {
-     return getPort({port: 4000});
+    return getPort({ port: 4000 });
 })();
 
 port.then((res) => {
-    console.log(res)
-    expressApp.listen(res)
-})
+    console.log(res);
+    expressApp.listen(res);
+});
+
+//Electron backend
+
+ipcMain.on("addedDevice", (event) => {
+    event.returnValue = "sent";
+    return currentReq.send({ appStatus: "success", deviceName: os.hostname() });
+});
+
+ipcMain.on("canceledAddDevice", (event) => {
+    event.returnValue = "sent";
+    return currentReq.send({ appStatus: "cancelled", deviceName: "null" });
+});
 
 ipcMain.on("getIp", (event) => {
     port.then((res) => {
-        event.returnValue = `${ip.address()}:${res}`
+        event.returnValue = `${internalIp.v4.sync()}:${res}`;
+    });
+});
+
+ipcMain.on("getImage", (event, args) => {
+    dialog.showOpenDialog(
+        null,
+        {
+            filters: [{ name: "images", extensions: ["jpg", "png", "gif"] }],
+            properties: ["openFile"]
+        }
+    ).then(file => {
+        if (!fs.existsSync(path.join(app.getPath("userData").toString(), "Images"))) {
+            fs.mkdirSync(path.join(app.getPath("userData").toString(),'Images'));
+        }
+        fs.copyFile(
+            file.filePaths[0],
+            path.join(app.getPath("userData").toString(), "Images", path.basename(file.filePaths[0])),
+            function(err) {
+                if (err) throw err;
+            }
+        );
+        const image = fs.readFileSync(file.filePaths[0]).toString("base64");
+        event.sender.send("returnImage", {
+            file: image,
+            location: path.join(app.getPath("userData").toString(), "Images", path.basename(file.filePaths[0]))
+        });
+    });
+});
+
+ipcMain.on("getImageRaw", (event, args) => {
+    event.returnValue = fs.readFileSync(args).toString("base64");
+});
+
+ipcMain.on("getUserDataFolder", (event, args) => {
+    event.returnValue = app.getPath("userData");
+});
+
+ipcMain.on("createFile",(event, { path, contents }) => {
+    fs.appendFile(path, contents, (err) => {
+        if (err) {
+            event.return = `ERROR: ${err}`;
+            throw err;
+        } else {
+            event.returnValue = "SUCCESS";
+        }
     })
 })
 
+ipcMain.on("checkFileExists", (event, {path}) => {
+    if (fs.existsSync(path)) {
+        event.returnValue = "EXISTS";
+    } else {
+        event.returnValue = "NEXISTS";
+    }
+})
+
+ipcMain.on("overwriteFile", (event, {path, contents}) => {
+    fs.writeFile(path, contents, function(err) {
+        if (err) throw err;
+        event.returnValue = "success";
+    });
+})
+
+ipcMain.on("readFile",  (event,{path}) => {
+    fs.readFile(path, "utf8", function(err, data) {
+        if (err) throw err;
+        event.returnValue = data;
+    });
+})

@@ -4,7 +4,7 @@ import * as serviceWorker from './serviceWorker';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core';
 import HomePage from "./HomePage";
 import { Provider } from "react-redux";
-import { store } from './Store';
+import { store } from "./Store";
 const customTitlebar = window.require('custom-electron-titlebar')
 
 export const theme = createMuiTheme({
@@ -27,7 +27,9 @@ export const theme = createMuiTheme({
 
 const titleBar = new customTitlebar.Titlebar({
     backgroundColor: customTitlebar.Color.fromHex('#1B1B1B'),
-    menu: null
+    menu: null,
+    maximizable: false,
+    hideWhenClickingClose: true
 })
 
 titleBar.updateTitle(" ")
