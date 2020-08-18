@@ -6,7 +6,7 @@ import {store} from "./Store/Store";
 import MainNavigation from "./Pages/MainNavigation";
 
 
-export default class App extends React.Component {
+export default class App extends React.Component<any,any> {
     render() {
         return (
             <Provider store={store}>

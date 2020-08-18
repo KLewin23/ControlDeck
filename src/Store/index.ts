@@ -23,7 +23,7 @@ export enum Orientation {
 export interface MainReducerType {
     orientation: Orientation
     apiUrl: string,
-    scanningForBarcodes: boolean
+    scanningForBarcode: boolean
     devices: Device[],
     profiles: []
 }

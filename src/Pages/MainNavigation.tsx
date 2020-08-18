@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {AntDesign, Feather} from '@expo/vector-icons';
@@ -7,10 +7,9 @@ import Home from "./Home";
 import TopBar from "../Components/TopBar";
 import Connect from "./Connect";
 import {store} from "../Store/Store";
-import {MainReducerType, Orientation} from "../Store";
+import {ActionType, MainReducerType, Orientation} from "../Store";
 import Deck from "./Deck";
-import {ActionType} from "../Store";
-import AsyncStorage from "@react-native-community/async-storage";
+import {AsyncStorage} from "react-native";
 import {connect, ConnectedProps} from "react-redux";
 
 const mapState = (state: MainReducerType) => ({
@@ -21,7 +20,7 @@ const connector = connect(mapState, {});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-const MainNavigation = (props : PropsFromRedux) => {
+const MainNavigation = (props: PropsFromRedux) => {
 
     async function getDevices() {
         return await AsyncStorage.getItem('ControlDeck-Devices')
@@ -40,7 +39,7 @@ const MainNavigation = (props : PropsFromRedux) => {
     })
 
     const barPress = () => {
-        store.dispatch({type:ActionType.SET_ORIENTATION, payload: Orientation.Portrait})
+        store.dispatch({type: ActionType.SET_ORIENTATION, payload: Orientation.Portrait})
         store.dispatch({type: ActionType.SET_BARCODE_SCANNER_STATUS, payload: false})
     }
 

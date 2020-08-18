@@ -1,11 +1,11 @@
 import {AnyAction} from "redux";
 import {ActionType, MainReducerType, Orientation} from ".";
-import AsyncStorage from '@react-native-community/async-storage';
+import {AsyncStorage} from 'react-native';
 
 
 const initialState: MainReducerType = {
     apiUrl: '',
-    scanningForBarcodes: false,
+    scanningForBarcode: false,
     devices: [],
     profiles: [],
     orientation: Orientation.Portrait
@@ -23,37 +23,37 @@ export default function MainReducer(state = initialState, action: AnyAction): Ma
             return {
                 ...state,
                 apiUrl: action.payload
-            }
+            };
         case ActionType.SET_BARCODE_SCANNER_STATUS:
             return {
                 ...state,
-                scanningForBarcodes: action.payload
-            }
+                scanningForBarcode: action.payload
+            };
         case ActionType.ADD_DEVICE:
             AsyncStorage.setItem('ControlDeck-Devices', JSON.stringify([...state.devices, action.payload])).then(r => {
-            })
+            });
             return {
                 ...state,
                 devices: [...state.devices, action.payload]
-            }
+            };
         case ActionType.SET_DEVICES:
             return {
                 ...state,
                 devices: action.payload
-            }
+            };
         case ActionType.REMOVE_DEVICE:
             AsyncStorage.setItem('ControlDeck-Devices', JSON.stringify(state.devices.filter((cur, index) => index !== action.payload)))
-                .then(r => {})
+                .then(r => {});
             return {
                 ...state,
                 devices: state.devices.filter((cur, index) => index !== action.payload)
-            }
+            };
         case ActionType.SET_ORIENTATION:
-            console.log(action.payload)
+            console.log(action.payload);
             return {
                 ...state,
                 orientation: action.payload
-            }
+            };
         default:
             return state;
     }

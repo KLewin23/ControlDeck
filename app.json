@@ -1,6 +1,6 @@
 {
   "expo": {
-    "entryPoint": "src/App.js",
+    "entryPoint": "./src/App.tsx",
     "name": "ControlDeck",
     "slug": "ControlDeck",
     "version": "1.0.0",

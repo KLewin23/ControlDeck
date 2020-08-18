@@ -39,7 +39,7 @@ const mapDispatch = {
 
 const mapState = (state: MainReducerType) => ({
     devices: state.devices,
-    scanningForBarcodes: state.scanningForBarcodes
+    scanningForBarcodes: state.scanningForBarcode
 });
 
 const connector = connect(mapState, mapDispatch);
