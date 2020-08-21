@@ -1,11 +1,7 @@
 name: Build/Release
 on:
-  push:
-    branches:
-      - DesktopApplication
-  pull_request:
-    branches:
-      - DesktopApplication
+  tags:
+    Desktop-v.*
 
 jobs:
   relase:
