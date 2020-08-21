@@ -1,10 +1,21 @@
 import React from "react";
-import { GridList, GridListTile, IconButton, makeStyles, Tooltip, Typography } from "@material-ui/core";
+import { GridList, GridListTile, makeStyles, Tooltip, Typography } from "@material-ui/core";
 import ButtonBase from "@material-ui/core/ButtonBase";
-import { DeleteOutline, ErrorOutlineTwoTone, PhoneIphone, TabletMac } from "@material-ui/icons";
+import { ErrorOutlineTwoTone, PhoneIphone, TabletMac } from "@material-ui/icons";
+import { Device, Profile } from "../../Store/Reducers/mainReducer";
+
+/*
+    data: can be any of the types listed as only a name and a type is required
+          (name : used for id and shown in tile // TESTED , type: used to pick which icon to show )
+    onTileClick: when a tile is clicked this call back is called with the index of the tile clicked // TESTED
+    checkForWarnings: if defined should return a string containing a warning for any cases, // TESTED
+                        callback will be passed the elements data
+    //TODO deletable: NOT IMPLEMENTED -- when true will allow any of the tiles to be deleted
+    //TODO onDelete: NOT IMPLEMENTED -- called when a tile is clicked to be deleted
+ */
 
 interface Props {
-    data: any[],
+    data: Profile[] | Device[] | {name: string, type: number}[],
     onTileClick?: (index: number) => void
     checkForWarnings?: (element: any) => string,
     deletable?: boolean,
@@ -56,9 +67,10 @@ export default function CustomGridList(props: Props) {
 
     return (
         <GridList cols={3} style={{ width: "602px", margin: "auto", marginTop: "30px" }}>
-            {props.data.map((cur, index) => {
+            {
+                (props.data as {name: string, type: number}[]).map((cur, index) => {
                 const warning = (props.checkForWarnings !== undefined && props.checkForWarnings(cur) !== "") ? (
-                    <Tooltip title={props.checkForWarnings(cur)}>
+                    <Tooltip id={cur.name + "_warning"} title={props.checkForWarnings(cur)}>
                         <ErrorOutlineTwoTone
                             style={{ color: "yellow", position: "absolute", opacity: 0.6, right: "5px", top: "5px" }}/>
                     </Tooltip>
@@ -66,7 +78,7 @@ export default function CustomGridList(props: Props) {
 
                 return (
                     <GridListTile cols={1} key={index} style={{ height: "135px" }}>
-                        <ButtonBase onClick={() => {
+                        <ButtonBase id={cur.name} onClick={() => {
                             if (props.onTileClick === undefined) return;
                             props.onTileClick(index);
                         }} style={{
@@ -79,10 +91,10 @@ export default function CustomGridList(props: Props) {
                                      float: "right"
                                  } : { margin: "auto" }}>
                                 {warning}
-                                <div style={{ width: "100%", height: "80%", display: "grid" }}>
+                                <div id={`${cur.name}_list_icon`} style={{ width: "100%", height: "80%", display: "grid" }}>
                                     {icon(cur.type)}
                                 </div>
-                                <Typography className={classes.text}>
+                                <Typography id={`${cur.name}_text`} className={classes.text}>
                                     {cur.name}
                                 </Typography>
                             </div>

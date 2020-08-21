@@ -35,40 +35,49 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+/*
+    title: will be shown to the right of the counter //TESTED
+    maxValue: highest value the counter can have, if not set default is 99 //TESTED
+    minValue: minimum value the counter can have, if not set 0 is default //TESTED
+    defaultValue: the initial value of the counter on load //TESTED
+    onChange: a function that will be ran on each change and will pass back the current value //TESTED
+ */
+
 interface Props {
     title: string,
     maxValue?: number,
+    minValue?: number,
     defaultValue?: number
-    onChange?: (value : number) => void
+    onChange?: (value: number) => void
 }
 
 export const Counter = (props: Props) => {
-    const [counter, setCounter] = useState((props.defaultValue === undefined)?0:props.defaultValue);
+    const [counter, setCounter] = useState((props.defaultValue === undefined) ? 0 : props.defaultValue);
     const classes = useStyles();
     return (
         <Grid container direction={"row"} style={{ marginBottom: "10px", width: "100%" }} justify={"center"}>
             <Grid item className={classes.text} style={{ marginRight: "10px", width: "70px" }}>
-                <Typography>
+                <Typography id={"Counter_Text"}>
                     {props.title}
                 </Typography>
             </Grid>
             <Grid item className={classes.root}>
-                <ButtonBase onClick={() => {
-                    if (counter === 0) return;
-                    setCounter(counter - 1);
-                    if (props.onChange === undefined) return;
-                    props.onChange(counter - 1)
+                <ButtonBase id={"Counter_DecreaseButton"} onClick={() => {
+                    if (counter - 1 >= (props.minValue || 0)) {
+                        setCounter(counter - 1);
+                        if (props.onChange === undefined) return;
+                        props.onChange(counter - 1);
+                    }
                 }}>
                     <Grid item className={classes.boxLeft}>
                         <Remove className={classes.icons}/>
                     </Grid>
                 </ButtonBase>
-                <ButtonBase onClick={() => {
-                    if (counter >= 99) return;
-                    if (props?.maxValue !== undefined && counter >= props.maxValue) return;
+                <ButtonBase id={"Counter_IncreaseButton"} onClick={() => {
+                    if (counter >= (props.maxValue || 99)) return;
                     setCounter(counter + 1);
                     if (props.onChange === undefined) return;
-                    props.onChange(counter + 1)
+                    props.onChange(counter + 1);
                 }}>
                     <Grid item className={classes.boxRight}>
                         <Add className={classes.icons}/>
@@ -76,7 +85,7 @@ export const Counter = (props: Props) => {
                 </ButtonBase>
             </Grid>
             <Grid item className={classes.text} style={{ marginLeft: "10px", width: "20px" }}>
-                <Typography>
+                <Typography id={"Counter_Value"}>
                     {counter}
                 </Typography>
             </Grid>

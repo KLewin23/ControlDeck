@@ -1,0 +1,324 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom Grid List renders correctly 1`] = `
+<ul
+  className="MuiGridList-root"
+  style={
+    Object {
+      "margin": "auto",
+      "marginTop": "30px",
+      "width": "602px",
+    }
+  }
+>
+  <li
+    className="MuiGridListTile-root"
+    style={
+      Object {
+        "height": "135px",
+        "padding": 2,
+        "width": "33.333333333333336%",
+      }
+    }
+  >
+    <div
+      className="MuiGridListTile-tile"
+    >
+      <button
+        className="MuiButtonBase-root"
+        disabled={false}
+        id="test1"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        style={
+          Object {
+            "height": "110px",
+            "width": "180px",
+          }
+        }
+        tabIndex={0}
+        type="button"
+      >
+        <div
+          className="makeStyles-card-1"
+          style={
+            Object {
+              "marginLeft": 0,
+            }
+          }
+        >
+          <div
+            id="test1_list_icon"
+            style={
+              Object {
+                "display": "grid",
+                "height": "80%",
+                "width": "100%",
+              }
+            }
+          >
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root makeStyles-icon_large-3"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"
+              />
+            </svg>
+          </div>
+          <p
+            className="MuiTypography-root makeStyles-text-2 MuiTypography-body1"
+            id="test1_text"
+          >
+            test1
+          </p>
+        </div>
+      </button>
+    </div>
+  </li>
+  <li
+    className="MuiGridListTile-root"
+    style={
+      Object {
+        "height": "135px",
+        "padding": 2,
+        "width": "33.333333333333336%",
+      }
+    }
+  >
+    <div
+      className="MuiGridListTile-tile"
+    >
+      <button
+        className="MuiButtonBase-root"
+        disabled={false}
+        id="test2"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        style={
+          Object {
+            "height": "110px",
+            "width": "180px",
+          }
+        }
+        tabIndex={0}
+        type="button"
+      >
+        <div
+          className="makeStyles-card-1"
+          style={
+            Object {
+              "margin": "auto",
+            }
+          }
+        >
+          <div
+            id="test2_list_icon"
+            style={
+              Object {
+                "display": "grid",
+                "height": "80%",
+                "width": "100%",
+              }
+            }
+          >
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root makeStyles-icon_small-4"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"
+              />
+            </svg>
+          </div>
+          <p
+            className="MuiTypography-root makeStyles-text-2 MuiTypography-body1"
+            id="test2_text"
+          >
+            test2
+          </p>
+        </div>
+      </button>
+    </div>
+  </li>
+  <li
+    className="MuiGridListTile-root"
+    style={
+      Object {
+        "height": "135px",
+        "padding": 2,
+        "width": "33.333333333333336%",
+      }
+    }
+  >
+    <div
+      className="MuiGridListTile-tile"
+    >
+      <button
+        className="MuiButtonBase-root"
+        disabled={false}
+        id="test3"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        style={
+          Object {
+            "height": "110px",
+            "width": "180px",
+          }
+        }
+        tabIndex={0}
+        type="button"
+      >
+        <div
+          className="makeStyles-card-1"
+          style={
+            Object {
+              "float": "right",
+              "marginRight": 0,
+            }
+          }
+        >
+          <div
+            id="test3_list_icon"
+            style={
+              Object {
+                "display": "grid",
+                "height": "80%",
+                "width": "100%",
+              }
+            }
+          >
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root makeStyles-icon_large-3"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z"
+              />
+            </svg>
+          </div>
+          <p
+            className="MuiTypography-root makeStyles-text-2 MuiTypography-body1"
+            id="test3_text"
+          >
+            test3
+          </p>
+        </div>
+      </button>
+    </div>
+  </li>
+  <li
+    className="MuiGridListTile-root"
+    style={
+      Object {
+        "height": "135px",
+        "padding": 2,
+        "width": "33.333333333333336%",
+      }
+    }
+  >
+    <div
+      className="MuiGridListTile-tile"
+    >
+      <button
+        className="MuiButtonBase-root"
+        disabled={false}
+        id="test4"
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        style={
+          Object {
+            "height": "110px",
+            "width": "180px",
+          }
+        }
+        tabIndex={0}
+        type="button"
+      >
+        <div
+          className="makeStyles-card-1"
+          style={
+            Object {
+              "marginLeft": 0,
+            }
+          }
+        >
+          <div
+            id="test4_list_icon"
+            style={
+              Object {
+                "display": "grid",
+                "height": "80%",
+                "width": "100%",
+              }
+            }
+          >
+            <svg
+              aria-hidden={true}
+              className="MuiSvgIcon-root makeStyles-icon_small-4"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M18.5 0h-14C3.12 0 2 1.12 2 2.5v19C2 22.88 3.12 24 4.5 24h14c1.38 0 2.5-1.12 2.5-2.5v-19C21 1.12 19.88 0 18.5 0zm-7 23c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm7.5-4H4V3h15v16z"
+              />
+            </svg>
+          </div>
+          <p
+            className="MuiTypography-root makeStyles-text-2 MuiTypography-body1"
+            id="test4_text"
+          >
+            test4
+          </p>
+        </div>
+      </button>
+    </div>
+  </li>
+</ul>
+`;

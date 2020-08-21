@@ -2,13 +2,22 @@ import * as React from "react";
 import { Grid, makeStyles, Modal, Typography } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 
+/*
+    title: shown at the top of the modal
+    open: whether the modal should be shown or not
+    onClose: a function ran when the use clicks the exit button
+    children: elements that should be shown in the modal
+    height: the height of the modal
+    width: the width of the modal
+ */
+
 interface Props {
+    title: string
     open: boolean,
     onClose: () => void,
     children: JSX.Element[] | JSX.Element
     height?: number,
     width?: number,
-    title: string
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -68,14 +77,15 @@ export const CustomModal = (props: Props) => {
     });
     return (
         <Modal
+            id={`${props.title}_modal`}
             className={classes.modal}
             open={props.open}
         >
             <div className={classes.container}>
                 <Grid container direction={"column"} className={classes.root}>
                     <div className={classes.topBar}>
-                        <Typography className={classes.title}>{props.title}</Typography>
-                        <CloseOutlined className={classes.exitButton} onClick={() => props.onClose()}/>
+                        <Typography id={`${props.title}_title`} className={classes.title}>{props.title}</Typography>
+                        <CloseOutlined id={`${props.title}_close_button`} className={classes.exitButton} onClick={() => props.onClose()}/>
                     </div>
                     {props.children}
                 </Grid>

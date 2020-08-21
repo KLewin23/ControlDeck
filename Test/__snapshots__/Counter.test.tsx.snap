@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Counter renders correctly 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-container MuiGrid-justify-xs-center"
+  style={
+    Object {
+      "marginBottom": "10px",
+      "width": "100%",
+    }
+  }
+>
+  <div
+    className="MuiGrid-root makeStyles-text-5 MuiGrid-item"
+    style={
+      Object {
+        "marginRight": "10px",
+        "width": "70px",
+      }
+    }
+  >
+    <p
+      className="MuiTypography-root MuiTypography-body1"
+      id="Counter_Text"
+    >
+      Test
+    </p>
+  </div>
+  <div
+    className="MuiGrid-root makeStyles-root-1 MuiGrid-item"
+  >
+    <button
+      className="MuiButtonBase-root"
+      disabled={false}
+      id="Counter_DecreaseButton"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <div
+        className="MuiGrid-root makeStyles-boxLeft-2 MuiGrid-item"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-icons-4"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 13H5v-2h14v2z"
+          />
+        </svg>
+      </div>
+    </button>
+    <button
+      className="MuiButtonBase-root"
+      disabled={false}
+      id="Counter_IncreaseButton"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      <div
+        className="MuiGrid-root makeStyles-boxRight-3 MuiGrid-item"
+      >
+        <svg
+          aria-hidden={true}
+          className="MuiSvgIcon-root makeStyles-icons-4"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+          />
+        </svg>
+      </div>
+    </button>
+  </div>
+  <div
+    className="MuiGrid-root makeStyles-text-5 MuiGrid-item"
+    style={
+      Object {
+        "marginLeft": "10px",
+        "width": "20px",
+      }
+    }
+  >
+    <p
+      className="MuiTypography-root MuiTypography-body1"
+      id="Counter_Value"
+    >
+      0
+    </p>
+  </div>
+</div>
+`;

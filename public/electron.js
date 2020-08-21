@@ -1,21 +1,21 @@
 // @ts-ignore
-const { app, BrowserWindow, Tray, nativeImage, ipcMain, dialog } = require("electron");
+const { Menu, app, BrowserWindow, Tray, nativeImage, ipcMain, dialog } = require("electron");
 const path = require("path");
 const url = require("url");
 const express = require("express");
 const getPort = require("get-port");
 const internalIp = require("internal-ip");
+const { autoUpdater } = require("electron-updater")
 const os = require("os");
 const fs = require("fs");
 
 let mainWindow;
 let tray;
-let currentReq;
+let currentReq = null;
 const expressApp = express();
 
 app.whenReady().then(() => {
-    tray = new Tray(nativeImage.createFromPath(path.join(__dirname, "/icon.png")));
-    tray.on("click", () => mainWindow.show());
+    autoUpdater.checkForUpdatesAndNotify();
     mainWindow = new BrowserWindow({
         width: 800,
         height: 550,
@@ -29,24 +29,35 @@ app.whenReady().then(() => {
         frame: false
     });
 
+    const contextMenu = Menu.buildFromTemplate([
+        { label : 'Close', }
+    ])
+    contextMenu.items[0].click = () => app.stop()
+    tray = new Tray(nativeImage.createFromPath(path.join(__dirname, "/icon.png")));
+    tray.on("click", () => mainWindow.show());
+    tray.setContextMenu(contextMenu)
+
     const startUrl =
         process.env.ELECTRON_START_URL ||
         url.format({
-            pathname: path.join(__dirname, "../build/index.html"),
+            pathname: path.join(__dirname, '/../build/index.html'),
             protocol: "file:",
             slashes: true
         });
-    console.log(startUrl);
     mainWindow.loadURL(startUrl);
     mainWindow.setResizable(false);
-    mainWindow.webContents.openDevTools();
+    if (process.env.MODE !== "TEST") {
+        mainWindow.webContents.openDevTools();
+    }
 
     mainWindow.on("close", (event) => {
-        event.preventDefault();
-        mainWindow.hide();
-        if (currentReq !== null) {
-            currentReq.send({ appStatus: "cancelled" });
-            mainWindow.webContents.send("resetState");
+        if (process.env.MODE !== "TEST") {
+            event.preventDefault();
+            mainWindow.hide();
+            if (currentReq !== null) {
+                //currentReq.send({ appStatus: "cancelled" });
+                mainWindow.webContents.send("resetState");
+            }
         }
     });
 });
@@ -127,7 +138,7 @@ ipcMain.on("getImage", (event, args) => {
         }
     ).then(file => {
         if (!fs.existsSync(path.join(app.getPath("userData").toString(), "Images"))) {
-            fs.mkdirSync(path.join(app.getPath("userData").toString(),'Images'));
+            fs.mkdirSync(path.join(app.getPath("userData").toString(), "Images"));
         }
         fs.copyFile(
             file.filePaths[0],
@@ -152,7 +163,7 @@ ipcMain.on("getUserDataFolder", (event, args) => {
     event.returnValue = app.getPath("userData");
 });
 
-ipcMain.on("createFile",(event, { path, contents }) => {
+ipcMain.on("createFile", (event, { path, contents }) => {
     fs.appendFile(path, contents, (err) => {
         if (err) {
             event.return = `ERROR: ${err}`;
@@ -160,27 +171,27 @@ ipcMain.on("createFile",(event, { path, contents }) => {
         } else {
             event.returnValue = "SUCCESS";
         }
-    })
-})
+    });
+});
 
-ipcMain.on("checkFileExists", (event, {path}) => {
+ipcMain.on("checkFileExists", (event, { path }) => {
     if (fs.existsSync(path)) {
         event.returnValue = "EXISTS";
     } else {
         event.returnValue = "NEXISTS";
     }
-})
+});
 
-ipcMain.on("overwriteFile", (event, {path, contents}) => {
+ipcMain.on("overwriteFile", (event, { path, contents }) => {
     fs.writeFile(path, contents, function(err) {
         if (err) throw err;
         event.returnValue = "success";
     });
-})
+});
 
-ipcMain.on("readFile",  (event,{path}) => {
+ipcMain.on("readFile", (event, { path }) => {
     fs.readFile(path, "utf8", function(err, data) {
         if (err) throw err;
         event.returnValue = data;
     });
-})
+});
