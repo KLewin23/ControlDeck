@@ -1,7 +1,8 @@
 name: Build/Release
 on:
-  tags:
-    Desktop-v.*
+  push:
+    tags:
+      - Desktop-v.*
 
 jobs:
   relase:
