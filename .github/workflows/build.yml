@@ -23,9 +23,7 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: 12.x
-
-      - name: Install Yarn
-        run: npm install -g yarn
+      - run: npm install -g yarn # Extra Step
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
