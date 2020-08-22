@@ -5,7 +5,7 @@ const url = require("url");
 const express = require("express");
 const getPort = require("get-port");
 const internalIp = require("internal-ip");
-const { autoUpdater } = require("electron-updater")
+const { autoUpdater } = require("electron-updater");
 const os = require("os");
 const fs = require("fs");
 
@@ -30,23 +30,23 @@ app.whenReady().then(() => {
     });
 
     const contextMenu = Menu.buildFromTemplate([
-        { label : 'Close', }
-    ])
-    contextMenu.items[0].click = () => app.stop()
+        { label: "Close" }
+    ]);
+    contextMenu.items[0].click = () => app.quit();
     tray = new Tray(nativeImage.createFromPath(path.join(__dirname, "/icon.png")));
     tray.on("click", () => mainWindow.show());
-    tray.setContextMenu(contextMenu)
+    tray.setContextMenu(contextMenu);
 
     const startUrl =
         process.env.ELECTRON_START_URL ||
         url.format({
-            pathname: path.join(__dirname, '/../build/index.html'),
+            pathname: path.join(__dirname, "/../build/index.html"),
             protocol: "file:",
             slashes: true
         });
     mainWindow.loadURL(startUrl);
     mainWindow.setResizable(false);
-    if (process.env.MODE !== "TEST") {
+    if (JSON.stringify(process.env.MODE) === JSON.stringify("DEV")) {
         mainWindow.webContents.openDevTools();
     }
 
@@ -78,28 +78,17 @@ expressApp.get("/addDevice", (req, res) => {
 });
 
 expressApp.get("/getProfile", (req, res) => {
-    res.send({
-        rows: 2,
-        cols: 2,
-        tiles: [
-            {
-                name: "test1",
-                action: "consoleLog"
-            },
-            {
-                name: "test2",
-                action: "consoleLog"
-            },
-            {
-                name: "test3",
-                action: "consoleLog"
-            },
-            {
-                name: "test4",
-                action: "consoleLog"
-            }
-        ]
-    });
+    try {
+        if (req.query.name === undefined) {
+            res.send({status: "error", error: "no name parameter in request"})
+        } else {
+            console.log(req.query.name)
+            mainWindow.webContents.send("getProfile", {name: req.query.name });
+            currentReq = res;
+        }
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 const port = (async () => {
@@ -122,6 +111,15 @@ ipcMain.on("canceledAddDevice", (event) => {
     event.returnValue = "sent";
     return currentReq.send({ appStatus: "cancelled", deviceName: "null" });
 });
+
+ipcMain.on("sendProfile", (event,args) => {
+    event.returnValue = "sent";
+    if (typeof(args) === "string") {
+        return currentReq.send({status: "error", error: args})
+    } else {
+        return currentReq.send({status: "success", profile: args})
+    }
+})
 
 ipcMain.on("getIp", (event) => {
     port.then((res) => {
