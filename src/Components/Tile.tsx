@@ -21,8 +21,7 @@ export const Tile = (props: Props) => {
                 width: 110,
                 alignSelf: "center",
                 justifyContent: "center",
-                alignContent: "center"
-            }}
+                alignContent: "center"          }}
             onPress={() => {
                 if (Device_expo.deviceName === null) return;
                 fetch(`http://${props.ip}/event?name=${encodeURIComponent(Device_expo.deviceName)}`,{method: 'POST'}).then(res => {
