@@ -4,6 +4,7 @@ import MainReducer from "./Reducers/mainReducer";
 export enum ActionType {
     ADD_PROFILE,
     MODIFY_PROFILE,
+    ADD_BUTTON,
     MODIFY_BUTTON,
     SET_PROFILE_PAGE_STATE,
     ADD_DEVICE,

@@ -35,31 +35,30 @@ const useStyles = makeStyles((theme) => ({
         }
     }),
     deleteButton: {
-        backgroundColor: '#a1150b',
+        backgroundColor: "#a1150b",
         "&:hover": {
-            backgroundColor: '#b8180d'
+            backgroundColor: "#b8180d"
         }
     },
     button: {
-        width: '49%',
+        width: "49%",
         marginTop: "10px",
         marginBottom: "10px",
         textTransform: "capitalize",
         color: "white",
         margin: "auto",
-        verticalAlign: "center",
+        verticalAlign: "center"
     }
 }));
 
 
 export const ModifyDeviceModal = (props: Props) => {
 
-    const [selectedProfile, setSelectedProfile] = useState((props.selectedDevice.profile === null)?-1:props.selectedDevice.profile);
+    const [selectedProfile, setSelectedProfile] = useState((props.selectedDevice.profile === null) ? -1 : props.selectedDevice.profile);
 
     useEffect(() => {
-        setSelectedProfile((props.selectedDevice.profile === null)?-1:props.selectedDevice.profile)
-    },[props.selectedDevice.profile])
-
+        setSelectedProfile((props.selectedDevice.profile === null) ? -1 : props.selectedDevice.profile);
+    }, [props.selectedDevice.profile]);
 
 
     const classes = useStyles({
@@ -100,33 +99,36 @@ export const ModifyDeviceModal = (props: Props) => {
                 {
                     (selectedProfile === -1) ?
                         (profiles.length === 1) ?
-                            <Tooltip title={`No profile of type ${ProfileTypes[props.selectedDevice.type].name}, please create one`}>
+                            <Tooltip
+                                title={`No profile of type ${ProfileTypes[props.selectedDevice.type].name}, please create one`}>
                                 <ErrorOutlineTwoTone style={{ color: "red", fontSize: "22px", marginLeft: "5px" }}/>
                             </Tooltip> :
-                        <Tooltip title={"No profile selected"}>
-                            <ErrorOutlineTwoTone style={{ color: "yellow", fontSize: "22px", marginLeft: "5px" }}/>
-                        </Tooltip> : <React.Fragment/>
+                            <Tooltip title={"No profile selected"}>
+                                <ErrorOutlineTwoTone style={{ color: "yellow", fontSize: "22px", marginLeft: "5px" }}/>
+                            </Tooltip> : <React.Fragment/>
                 }
 
             </Grid>
             <Grid className={classes.gridItem}>
                 <div style={{ width: "200px" }}>
-                    <Button style={{float:'left'}} className={`${classes.saveButton} ${classes.button}`} fullWidth onClick={() => {
-                        if (selectedProfile === -1 || props.selectedDevice.profile === selectedProfile) return;
-                        store.dispatch({
-                            type: ActionType.MODIFY_DEVICE,
-                            payload: {
-                                deviceIndex: props.selectedDeviceIndex,
-                                data: {
-                                    profile: selectedProfile
-                                }
-                            }
-                        });
-                        props.onClose();
-                    }}>Save</Button>
-                    <Button style={{float:'right'}} className={`${classes.button} ${classes.deleteButton}`} fullWidth onClick={() => {
-                        props.delete();
-                    }}>Delete</Button>
+                    <Button style={{ float: "left" }} className={`${classes.saveButton} ${classes.button}`} fullWidth
+                            onClick={() => {
+                                if (selectedProfile === -1 || props.selectedDevice.profile === selectedProfile) return;
+                                store.dispatch({
+                                    type: ActionType.MODIFY_DEVICE,
+                                    payload: {
+                                        deviceIndex: props.selectedDeviceIndex,
+                                        data: {
+                                            profile: selectedProfile
+                                        }
+                                    }
+                                });
+                                props.onClose();
+                            }}>Save</Button>
+                    <Button style={{ float: "right" }} className={`${classes.button} ${classes.deleteButton}`} fullWidth
+                            onClick={() => {
+                                props.delete();
+                            }}>Delete</Button>
                 </div>
             </Grid>
         </CustomModal>

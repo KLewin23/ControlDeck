@@ -52,15 +52,17 @@ export default function AddDeviceModal(props: Props) {
     const classes = useStyles();
     const [device, setDevice] = useState<Device | null>(null);
 
+    console.log(props.ip)
+
     useEffect(() => {
         ipcRenderer.on("addDevice", (event: any, data: DeviceAPI) => {
-            console.log("ran")
+            console.log(data)
             const type = ProfileTypes.findIndex((value) => {
                 return data.height >= value.deviceSizeLimits.height && data.width >= value.deviceSizeLimits.width;
             });
             setDevice({
                 name: data.name,
-                type: type,
+                type: type || 0,
                 profile: null
             });
         });

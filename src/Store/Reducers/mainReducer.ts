@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { ActionType } from "../Store";
+import { ActionType, store } from "../Store";
 import path from "path";
 import { Button } from "@material-ui/core";
 
@@ -20,7 +20,8 @@ export type Profile = {
     rows: number,
     pages: [
         Button[]
-    ]
+    ],
+    lastUpdated: number
 }
 
 export type Device = {
@@ -74,40 +75,61 @@ function updateConfig(state: MainReducerType) {
     }
 }
 
+ipcRenderer.on("getProfile", (event: any, name: { name: string }) => {
+    const state = store.getState();
+    const device = state.devices.find(cur => cur.name === name.name);
+    console.log(name)
+    console.log(state.devices)
+    ipcRenderer.sendSync("sendProfile", (device === undefined) ? "device not found" : (device.profile === null) ? "No profile setup for device" : state.profiles[device.profile]);
+});
+
 export default function MainReducer(
     state = initialState,
     action: AnyAction
 ): MainReducerType {
     switch (action.type) {
         case ActionType.ADD_PROFILE: {
-            const payload = action.payload
-            if ('name' in payload && 'type' in payload && 'columns' in payload && 'rows' in payload && 'pages' in payload ) {
+            const payload = action.payload;
+            const date = new Date();
+            if ("name" in payload && "type" in payload && "columns" in payload && "rows" in payload && "pages" in payload) {
                 const newState = {
                     ...state,
-                    profiles: [...state.profiles, payload]
-                }
-                updateConfig(newState)
-                return newState
-            }else{
-                return {...state}
+                    profiles: [...state.profiles, { ...payload, lastUpdated: date.getTime() }]
+                };
+                updateConfig(newState);
+                return newState;
+            } else {
+                return { ...state };
             }
         }
         case ActionType.MODIFY_PROFILE: {
-            const profiles = [...state.profiles]
+            const profiles = [...state.profiles];
+            const date = new Date();
             profiles[action.payload.profileIndex] = {
                 ...state.profiles[action.payload.profileIndex],
-                ...action.payload.data
-            }
-            const newState ={
+                ...action.payload.data,
+                lastUpdated: date.getTime()
+            };
+            const newState = {
                 ...state,
                 profiles: profiles
-            }
-            updateConfig(newState)
-            return newState
+            };
+            updateConfig(newState);
+            return newState;
+        }
+        case ActionType.ADD_BUTTON: {
+            const profiles = [...state.profiles];
+            profiles[action.payload.profileIndex].pages[action.payload.pageIndex].push(action.payload.button as Button)
+            const newState = {
+                ...state,
+                profiles: profiles
+            };
+            updateConfig(newState);
+            return newState;
         }
         case ActionType.MODIFY_BUTTON: {
             const profiles = [...state.profiles];
-            profiles[action.payload.profileIndex].pages[action.payload.pageIndex][action.payload.buttonIndex] = action.payload.button as Button
+            profiles[action.payload.profileIndex].pages[action.payload.pageIndex][action.payload.buttonIndex] = action.payload.button as Button;
             const newState = {
                 ...state,
                 profiles: profiles
@@ -118,11 +140,11 @@ export default function MainReducer(
         case ActionType.SET_PROFILE_PAGE_STATE: {
             return {
                 ...state,
-                pageStates:{
+                pageStates: {
                     ...state.pageStates,
                     profilePages: action.payload
                 }
-            }
+            };
         }
         case ActionType.ADD_DEVICE: {
             const newState = {
@@ -133,17 +155,17 @@ export default function MainReducer(
             return newState;
         }
         case ActionType.MODIFY_DEVICE: {
-            const devices = [...state.devices]
+            const devices = [...state.devices];
             devices[action.payload.deviceIndex] = {
                 ...state.devices[action.payload.deviceIndex],
                 ...action.payload.data
-            }
-            const newState ={
+            };
+            const newState = {
                 ...state,
                 devices: devices
-            }
-            updateConfig(newState)
-            return newState
+            };
+            updateConfig(newState);
+            return newState;
         }
         default:
             return state;

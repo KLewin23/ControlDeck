@@ -90,12 +90,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const NewButton = (props: Props) => {
-        const buttonData = props.profile.pages[props.page][props.index];
+        const buttonData = props.profile.pages[props.page][props.index] || {
+            name: "",
+            imagePath: "",
+            textColor: ""
+        };
         const classes = useStyles();
-        const [buttonName, setButtonName] = useState(buttonData.name);
-        const [imagePath, setImagePath] = useState(buttonData.imagePath);
-        const [fontColor, setFontColor] = useState(buttonData.textColor);
+        const [buttonName, setButtonName] = useState(buttonData.name || "");
+        const [imagePath, setImagePath] = useState(buttonData.imagePath || "");
+        const [fontColor, setFontColor] = useState(buttonData.textColor || "");
         const [showName, setShowName] = useState(false);
+        const [selectedAction, setSelectedAction] = useState(0);
         const [image, setImage] = useState(
             (buttonData.imagePath !== "") ?
                 (
@@ -110,7 +115,7 @@ export const NewButton = (props: Props) => {
 
         useEffect(() => {
             ipcRenderer.on("returnImage", (event: any, data: any) => {
-                setFontColor(buttonData.textColor)
+                setFontColor(buttonData.textColor);
                 setImagePath(data.location);
                 setImage(
                     <img className={classes.image} alt={"your icon"}
@@ -130,6 +135,8 @@ export const NewButton = (props: Props) => {
                 </Typography>
             </Grid>
         ) : <React.Fragment/>;
+
+        const actions = ["test", "test1", "test2"]
 
         const name = (showName) ? (
             <Typography style={{
@@ -151,25 +158,39 @@ export const NewButton = (props: Props) => {
             buttonData.imagePath === imagePath &&
             buttonData.showText === showName &&
             buttonData.textColor === fontColor &&
-            buttonData.action === "test"
+            buttonData.action === actions[selectedAction]
         );
 
         function saveData() {
-            store.dispatch({
-                type: ActionType.MODIFY_BUTTON,
-                payload: {
-                    profileIndex: props.index,
-                    pageIndex: props.page,
-                    buttonIndex: props.profileIndex,
-                    button: {
-                        name: buttonName,
-                        imagePath: imagePath,
-                        showText: showName,
-                        textColor: fontColor,
-                        action: "test"
+            const button = {
+                name: buttonName,
+                imagePath: imagePath,
+                showText: showName,
+                textColor: fontColor,
+                action: actions[selectedAction]
+            };
+            if (props.profile.pages[props.page][props.index] === undefined) {
+                store.dispatch({
+                    type: ActionType.ADD_BUTTON,
+                    payload: {
+                        profileIndex: props.profileIndex,
+                        pageIndex: props.page,
+                        buttonIndex:  props.index,
+                        button: button
                     }
-                }
-            });
+                });
+            } else {
+                store.dispatch({
+                    type: ActionType.MODIFY_BUTTON,
+                    payload: {
+                        profileIndex: props.profileIndex,
+                        pageIndex: props.page,
+                        buttonIndex:  props.index,
+                        button: button
+                    }
+                });
+            }
+
         }
 
         return (
@@ -196,7 +217,11 @@ export const NewButton = (props: Props) => {
                                     </IconButton>
                                 )
                             }}
-                                       value={(props.profile.pages[0][props.index].imagePath !== "") ? props.profile.pages[0][props.index].imagePath : "No Image Selected"}/>
+                                       value={
+                                           (props.profile.pages[0][props.index] !== undefined && props.profile.pages[0][props.index].imagePath !== "")
+                                               ? props.profile.pages[0][props.index].imagePath : "No Image Selected"
+                                       }
+                            />
                             <Grid item style={{ margin: "10px 0 10px 0" }}>
                                 <Typography style={{ display: "inline-block", color: "white", fontSize: "15px" }}>
                                     Show name :
@@ -210,13 +235,15 @@ export const NewButton = (props: Props) => {
                             {colorPicker}
                             <Grid item>
                                 <Select
+                                    value={selectedAction}
+                                    onChange={event => setSelectedAction(event.target.value as number)}
                                     className={classes.textBox}
                                     labelId="demo-customized-select-label"
                                     id="demo-simple-select"
                                     MenuProps={{ classes: { paper: classes.selectPaper } }}
                                     classes={{ root: classes.selectedElement }}
                                 >
-                                    {["test", "test"].map((cur, index) => (
+                                    {actions.map((cur, index) => (
                                         <MenuItem key={index} value={index}>{cur}</MenuItem>
                                     ))}
                                 </Select>
