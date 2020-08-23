@@ -100,6 +100,7 @@ export const NewButton = (props: Props) => {
         const [imagePath, setImagePath] = useState(buttonData.imagePath || "");
         const [fontColor, setFontColor] = useState(buttonData.textColor || "");
         const [showName, setShowName] = useState(false);
+        const [selectedAction, setSelectedAction] = useState(0);
         const [image, setImage] = useState(
             (buttonData.imagePath !== "") ?
                 (
@@ -135,6 +136,8 @@ export const NewButton = (props: Props) => {
             </Grid>
         ) : <React.Fragment/>;
 
+        const actions = ["test", "test1", "test2"]
+
         const name = (showName) ? (
             <Typography style={{
                 position: "absolute",
@@ -155,7 +158,7 @@ export const NewButton = (props: Props) => {
             buttonData.imagePath === imagePath &&
             buttonData.showText === showName &&
             buttonData.textColor === fontColor &&
-            buttonData.action === "test"
+            buttonData.action === actions[selectedAction]
         );
 
         function saveData() {
@@ -164,7 +167,7 @@ export const NewButton = (props: Props) => {
                 imagePath: imagePath,
                 showText: showName,
                 textColor: fontColor,
-                action: "test"
+                action: actions[selectedAction]
             };
             if (props.profile.pages[props.page][props.index] === undefined) {
                 store.dispatch({
@@ -177,7 +180,6 @@ export const NewButton = (props: Props) => {
                     }
                 });
             } else {
-                console.log("run")
                 store.dispatch({
                     type: ActionType.MODIFY_BUTTON,
                     payload: {
@@ -233,13 +235,15 @@ export const NewButton = (props: Props) => {
                             {colorPicker}
                             <Grid item>
                                 <Select
+                                    value={selectedAction}
+                                    onChange={event => setSelectedAction(event.target.value as number)}
                                     className={classes.textBox}
                                     labelId="demo-customized-select-label"
                                     id="demo-simple-select"
                                     MenuProps={{ classes: { paper: classes.selectPaper } }}
                                     classes={{ root: classes.selectedElement }}
                                 >
-                                    {["test", "test"].map((cur, index) => (
+                                    {actions.map((cur, index) => (
                                         <MenuItem key={index} value={index}>{cur}</MenuItem>
                                     ))}
                                 </Select>

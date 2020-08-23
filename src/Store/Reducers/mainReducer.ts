@@ -20,7 +20,8 @@ export type Profile = {
     rows: number,
     pages: [
         Button[]
-    ]
+    ],
+    lastUpdated: number
 }
 
 export type Device = {
@@ -77,6 +78,8 @@ function updateConfig(state: MainReducerType) {
 ipcRenderer.on("getProfile", (event: any, name: { name: string }) => {
     const state = store.getState();
     const device = state.devices.find(cur => cur.name === name.name);
+    console.log(name)
+    console.log(state.devices)
     ipcRenderer.sendSync("sendProfile", (device === undefined) ? "device not found" : (device.profile === null) ? "No profile setup for device" : state.profiles[device.profile]);
 });
 
@@ -87,10 +90,11 @@ export default function MainReducer(
     switch (action.type) {
         case ActionType.ADD_PROFILE: {
             const payload = action.payload;
+            const date = new Date();
             if ("name" in payload && "type" in payload && "columns" in payload && "rows" in payload && "pages" in payload) {
                 const newState = {
                     ...state,
-                    profiles: [...state.profiles, payload]
+                    profiles: [...state.profiles, { ...payload, lastUpdated: date.getTime() }]
                 };
                 updateConfig(newState);
                 return newState;
@@ -100,9 +104,11 @@ export default function MainReducer(
         }
         case ActionType.MODIFY_PROFILE: {
             const profiles = [...state.profiles];
+            const date = new Date();
             profiles[action.payload.profileIndex] = {
                 ...state.profiles[action.payload.profileIndex],
-                ...action.payload.data
+                ...action.payload.data,
+                lastUpdated: date.getTime()
             };
             const newState = {
                 ...state,

@@ -72,17 +72,17 @@ export default function AddProfileModal(props: Props) {
     function handleColsChange(event: React.ChangeEvent<HTMLInputElement>) {
         if (event.target.value as unknown as number > ProfileTypes[type].maxCols) {
             setColumns(ProfileTypes[type].maxCols);
-        } else if ((event.target.value as unknown as number) < 1) {
+        } else if ((parseInt(event.target.value)) < 1) {
             setColumns(1);
         } else {
-            setColumns(event.target.value as unknown as number);
+            setColumns((parseInt(event.target.value)));
         }
     }
 
     function handleRowsChange(event: React.ChangeEvent<HTMLInputElement>) {
         console.log(event.target.value);
         if (event.target.value as unknown as number > ProfileTypes[type].maxRows) {
-            setRows(ProfileTypes[type].maxRows);
+            setRows(ProfileTypes[type].maxRows as unknown as number);
         } else if ((event.target.value as unknown as number) < 1) {
             setRows(1);
         } else {
