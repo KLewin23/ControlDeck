@@ -47,12 +47,12 @@ const MainNavigation = (props: PropsFromRedux) => {
 
     return (
         <NavigationContainer>
-            <TopBar orientation={props.orientation}/>
+            <TopBar key={"here"} orientation={props.orientation}/>
             <Tab.Navigator backBehavior={"history"} activeColor={"#7A05BC"} inactiveColor={"#9F9F9F"}
                            barStyle={{
                                backgroundColor: 'white',
                                display: (props.orientation === Orientation.Landscape) ? 'none' : 'flex'
-                           }} initialRouteName={'qrCode'}>
+                           }} initialRouteName={'Home'}>
                 <Tab.Screen name="Home" component={Home}
                             options={{
                                 tabBarLabel: 'Home',

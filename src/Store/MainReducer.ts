@@ -30,8 +30,7 @@ export default function MainReducer(state = initialState, action: AnyAction): Ma
                 scanningForBarcode: action.payload
             };
         case ActionType.ADD_DEVICE:
-            AsyncStorage.setItem('ControlDeck-Devices', JSON.stringify([...state.devices, action.payload])).then(r => {
-            });
+            AsyncStorage.setItem('ControlDeck-Devices', JSON.stringify([...state.devices, action.payload])).then(r => {});
             return {
                 ...state,
                 devices: [...state.devices, action.payload]
@@ -49,7 +48,6 @@ export default function MainReducer(state = initialState, action: AnyAction): Ma
                 devices: state.devices.filter((cur, index) => index !== action.payload)
             };
         case ActionType.SET_ORIENTATION:
-            console.log(action.payload);
             return {
                 ...state,
                 orientation: action.payload

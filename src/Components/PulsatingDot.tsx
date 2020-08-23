@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useRef} from 'react';
 import {Animated, Easing, View} from "react-native";
 
-enum Status {
+export enum Status {
     connected,
     searching,
     disconnected

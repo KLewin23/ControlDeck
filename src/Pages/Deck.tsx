@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import { AsyncStorage, FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import Swiper from 'react-native-swiper'
 import {Tile} from '../Components/Tile';
 import {MaterialIcons} from '@expo/vector-icons';
@@ -7,8 +7,10 @@ import shortid from "shortid";
 import {store} from "../Store/Store";
 import {ActionType, MainReducerType, Orientation} from "../Store";
 import {connect, ConnectedProps} from "react-redux";
+import { useEffect, useState } from "react";
 
 const mapState = (state: MainReducerType) => ({
+    devices: state.devices,
     orientation: state.orientation
 });
 
@@ -16,41 +18,52 @@ const connector = connect(mapState, {});
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
+interface Button {
+    name: string,
+    imagePath: string,
+    showText: boolean
+    textColor: string,
+    action: string
+}
+
 interface Profile {
+    name: string,
+    type: number,
     columns: number,
     rows: number,
-    pages: Array<Array<{ name: string | null }>>
+    pages: [
+        Button[]
+    ],
+    lastUpdated: number
+}
+
+interface Props {
+
 }
 
 const Deck = (props: PropsFromRedux) => {
 
-    const profile: Profile = {
-        columns: 2,
-        rows: 3,
-        pages: [
-            [
-                {name: "test"},
-                {name: "test1"},
-                {name: "test2"},
-                {name: "test3"},
-                {name: "test4"},
-                {name: "test5"}
-            ],
-            [
-                {name: "test6"},
-                {name: "test7"},
-                {name: "test8"},
-                {name: "test9"},
-                {name: "test10"},
-                {name: "test11"},
-            ],
-            [
-                {name: "test12"},
-                {name: "test13"},
-                {name: "test14"}
-            ]
-        ]
-    }
+    const [profile,setProfile] = useState<Profile>({
+        name: "temp",
+        type: 0,
+        columns: 0,
+        rows: 0,
+        pages: [[]],
+        lastUpdated: 0
+    })
+
+    const [ip,setIp] = useState("")
+
+    useEffect(() => {
+        AsyncStorage.getItem("ControlDeck-Selected-connection").then(item => {
+            if (item === "null" || item === null) return
+            AsyncStorage.getItem(props.devices[parseInt(item)].name).then(profile => {
+                if (profile === null) return
+                setIp(props.devices[parseInt(item)].ip)
+                setProfile(JSON.parse(profile) as Profile)
+            })
+        });
+    }, []);
 
     const renderItem = ({item}: any) => (
         <View style={{flex: 1, flexDirection: 'column', margin: 1}}>
@@ -61,7 +74,7 @@ const Deck = (props: PropsFromRedux) => {
                     alignSelf: 'center',
                     justifyContent: 'center',
                     alignContent: 'center'
-                }}/> : <Tile title={item.name} orientation={props.orientation}/>
+                }}/> : <Tile title={item.name} ip={ip} event={item.action}  orientation={props.orientation}/>
             }
         </View>
     );

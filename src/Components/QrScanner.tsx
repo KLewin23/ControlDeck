@@ -13,7 +13,6 @@ export default function QrScanner(props: Props) {
     const [invalidQr, setInvalidQr] = useState(false);
 
     const handleBarCodeScanned = ({type, data}: BarCodeEvent) => {
-        console.log(data)
         if (data.slice(0, 3) === "CD:") {
             setScanned(true);
             setInvalidQr(false);

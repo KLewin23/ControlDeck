@@ -55,7 +55,7 @@
     "@types/react-test-renderer": "^16.9.3",
     "jest-expo": "^38.0.2",
     "prettier": "^2.0.5",
-    "react-test-renderer": "^16.13.1",
+    "react-test-renderer": "16.13.1",
     "typescript": "~3.9.5"
   },
   "private": true,

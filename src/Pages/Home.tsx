@@ -13,7 +13,7 @@ export default function Home() {
     }
 
     return (
-        <View>
+        <View key={"here"}>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Text style={{color: '#7A05BC', fontFamily: 'Overpass_800ExtraBold', fontSize: 17}}>Welcome to Control Deck</Text>
             </View>
