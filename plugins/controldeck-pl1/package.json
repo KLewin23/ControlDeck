@@ -1,0 +1,11 @@
+{
+  "name": "controldeck-pl1",
+  "version": "1.0.0",
+  "description": "test plugin for control deck",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kieran lewin",
+  "license": "ISC"
+}

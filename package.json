@@ -14,11 +14,13 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
+    "robotjs": "^0.6.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "rebuild": "npm rebuild --runtime=electron --target=10.0.0 --disturl=https://atom.io/download/atom-shell --abi=72",
     "electron-start-win": "set MODE=DEV&& set ELECTRON_START_URL=http://localhost:3000 && electron . ",
     "dev": "nodemon --exec npm run electron-start-win"
   },

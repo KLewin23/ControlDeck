@@ -7,6 +7,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 
 const { BrowserWindow, app, Menu, Tray } = require('electron');
+// const robotJs = require('robotjs');
 const url = require('url');
 const path = require('path');
 
@@ -51,4 +52,6 @@ app.whenReady().then(() => {
             mainWindow.hide();
         }
     });
+    mainWindow.hide();
+    // robotJs.keyTap('audio_pause');
 });
