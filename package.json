@@ -24,7 +24,7 @@
     "@types/react-test-renderer": "^16.9.3",
     "custom-electron-titlebar": "^3.2.3",
     "electron-updater": "^4.3.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fontsource-overpass": "^2.2.6",
     "get-port": "^5.1.1",
     "internal-ip": "^6.0.0",
